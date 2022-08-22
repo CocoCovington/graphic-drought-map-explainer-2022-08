@@ -1,0 +1,90 @@
+{# Template for any non-scripted graphics, i.e. Illustrator graphics or HTML tables #}
+{% extends 'base.html' %}
+{% from 'macros/prose.html' import prose %}
+
+{# set pack that provides JS #}
+{% set jsPackName = 'static' %}
+
+{% set context = data.text %}
+{% set graphicData = data.data %}
+
+{# used by the CMS #}
+{# if this is an ai2html graphic, fill out these variables #}
+{% set graphicTitle = context.headline %}
+{% set graphicCaption = context.caption %}
+{# graphicAltText is used by the CMS for accessibility #}
+{% set graphicAltText = context.alttext %}
+{% set graphicNote = context.note %}
+{% set graphicSource = context.source %}
+{% set graphicCredit = context.credit %}
+{# graphics will be surfaced in the graphics plugin under these tags #}
+{% set graphicTags = context.guten_tags %}
+
+{% block content %}
+{# data-graphic signifies that this can be embedded in the CMS #}
+<div class="app" data-graphic>
+  {# data-title is used to grab the title in the CMS #}
+  <h1 class="graphic-title" data-title>{{ context.headline | widont }}</h1>
+  {# data-caption is used to grab the caption in the CMS #}
+  <span data-caption>{{ prose(context.prose, context, graphicData) }}</span>
+
+  <style>
+    .legend {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 10px;
+      gap: 5px 20px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .item span:last-child {
+      margin-left: 5px;
+    }
+
+    .block {
+      width: 10px;
+      height: 10px;
+    }
+  </style>
+
+  <div class="legend">
+    <div class="graphic-prose item">
+      <span class="block" style="background-color: #fff5b2;"></span>
+      <span>Abnormally Dry</span>
+    </div>
+    <div class="graphic-prose item">
+      <span class="block" style="background-color: #fdde85;"></span>
+      <span>Moderate</span>
+    </div>
+    <div class="graphic-prose item">
+      <span class="block" style="background-color: #fdbb45;"></span>
+      <span>Severe</span>
+    </div>
+    <div class="graphic-prose item">
+      <span class="block" style="background-color: #db3f2a;"></span>
+      <span>Extreme</span>
+    </div>
+    <div class="graphic-prose item">
+      <span class="block" style="background-color: #a52c20;"></span>
+      <span>Exceptional</span>
+    </div>
+  </div>
+
+  {# add name of your ai2html file here #}
+  {% set ai2html = "drought-map-explainer" %}
+  {% include "ai2html-output/" + ai2html + ".html" %}
+
+  {# data-source and data-credit are also used in the CMS #}
+  <ul class="graphic-footer">
+    {% if context.note %}<li data-note>Note: {{ context.note }}</li>{% endif %}
+    {% if context.source %}<li data-source>Source: {{ context.source }}</li>{% endif %}
+    {% if context.credit %}<li data-credit>Credit: {{ context.credit }}</li>{% endif %}
+  </ul>
+</div>
+{% endblock content %}
