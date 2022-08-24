@@ -80,3 +80,4 @@ The interface with Google Drive within `data-visuals-create` projects currently 
 ## License
 
 MIT
+# graphic-drought-map-explainer-2022-08
